@@ -162,6 +162,15 @@
 		F73188A6162E3DC1006450CD /* Arial.fnt in Resources */ = {isa = PBXBuildFile; fileRef = F7318890162E3DC1006450CD /* Arial.fnt */; };
 		F73188A7162E3DC1006450CD /* Arial.png in Resources */ = {isa = PBXBuildFile; fileRef = F7318891162E3DC1006450CD /* Arial.png */; };
 		F73188B8162E529B006450CD /* CCParallaxNode-Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = F73188B7162E529B006450CD /* CCParallaxNode-Extras.m */; };
+		F7E1E2B6163E04B0009E1FFD /* Cow-Animate-1.png in Resources */ = {isa = PBXBuildFile; fileRef = F7E1E2AD163E04B0009E1FFD /* Cow-Animate-1.png */; };
+		F7E1E2B7163E04B0009E1FFD /* Cow-Animate-2.png in Resources */ = {isa = PBXBuildFile; fileRef = F7E1E2AE163E04B0009E1FFD /* Cow-Animate-2.png */; };
+		F7E1E2B8163E04B0009E1FFD /* Cow-Animate-3.png in Resources */ = {isa = PBXBuildFile; fileRef = F7E1E2AF163E04B0009E1FFD /* Cow-Animate-3.png */; };
+		F7E1E2B9163E04B0009E1FFD /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = F7E1E2B0163E04B0009E1FFD /* Default.png */; };
+		F7E1E2BA163E04B0009E1FFD /* Hit.png in Resources */ = {isa = PBXBuildFile; fileRef = F7E1E2B1163E04B0009E1FFD /* Hit.png */; };
+		F7E1E2BB163E04B0009E1FFD /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F7E1E2B2163E04B0009E1FFD /* Icon.png */; };
+		F7E1E2BC163E04B0009E1FFD /* Milk-Bullet.png in Resources */ = {isa = PBXBuildFile; fileRef = F7E1E2B3163E04B0009E1FFD /* Milk-Bullet.png */; };
+		F7E1E2BD163E04B0009E1FFD /* Stars.png in Resources */ = {isa = PBXBuildFile; fileRef = F7E1E2B4163E04B0009E1FFD /* Stars.png */; };
+		F7E1E2BE163E04B0009E1FFD /* Ufo-Hit.png in Resources */ = {isa = PBXBuildFile; fileRef = F7E1E2B5163E04B0009E1FFD /* Ufo-Hit.png */; };
 		F7F1A3911638D0FF008D70A0 /* LifeHeart.png in Resources */ = {isa = PBXBuildFile; fileRef = F7F1A3901638D0FF008D70A0 /* LifeHeart.png */; };
 		F7F1A39916390A40008D70A0 /* ScoreScene.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F1A39816390A40008D70A0 /* ScoreScene.m */; };
 		F7F1A3AC16393D23008D70A0 /* how3.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F1A3A716393D1E008D70A0 /* how3.m */; };
@@ -484,6 +493,15 @@
 		F7318891162E3DC1006450CD /* Arial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Arial.png; sourceTree = "<group>"; };
 		F73188B6162E529A006450CD /* CCParallaxNode-Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCParallaxNode-Extras.h"; sourceTree = "<group>"; };
 		F73188B7162E529B006450CD /* CCParallaxNode-Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCParallaxNode-Extras.m"; sourceTree = "<group>"; };
+		F7E1E2AD163E04B0009E1FFD /* Cow-Animate-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cow-Animate-1.png"; sourceTree = "<group>"; };
+		F7E1E2AE163E04B0009E1FFD /* Cow-Animate-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cow-Animate-2.png"; sourceTree = "<group>"; };
+		F7E1E2AF163E04B0009E1FFD /* Cow-Animate-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cow-Animate-3.png"; sourceTree = "<group>"; };
+		F7E1E2B0163E04B0009E1FFD /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		F7E1E2B1163E04B0009E1FFD /* Hit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Hit.png; sourceTree = "<group>"; };
+		F7E1E2B2163E04B0009E1FFD /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		F7E1E2B3163E04B0009E1FFD /* Milk-Bullet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Milk-Bullet.png"; sourceTree = "<group>"; };
+		F7E1E2B4163E04B0009E1FFD /* Stars.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Stars.png; sourceTree = "<group>"; };
+		F7E1E2B5163E04B0009E1FFD /* Ufo-Hit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ufo-Hit.png"; sourceTree = "<group>"; };
 		F7F1A3901638D0FF008D70A0 /* LifeHeart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LifeHeart.png; sourceTree = "<group>"; };
 		F7F1A39716390A40008D70A0 /* ScoreScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreScene.h; sourceTree = "<group>"; };
 		F7F1A39816390A40008D70A0 /* ScoreScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreScene.m; sourceTree = "<group>"; };
@@ -534,6 +552,15 @@
 		7DD333961639FE430049FC57 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				F7E1E2AD163E04B0009E1FFD /* Cow-Animate-1.png */,
+				F7E1E2AE163E04B0009E1FFD /* Cow-Animate-2.png */,
+				F7E1E2AF163E04B0009E1FFD /* Cow-Animate-3.png */,
+				F7E1E2B0163E04B0009E1FFD /* Default.png */,
+				F7E1E2B1163E04B0009E1FFD /* Hit.png */,
+				F7E1E2B2163E04B0009E1FFD /* Icon.png */,
+				F7E1E2B3163E04B0009E1FFD /* Milk-Bullet.png */,
+				F7E1E2B4163E04B0009E1FFD /* Stars.png */,
+				F7E1E2B5163E04B0009E1FFD /* Ufo-Hit.png */,
 				F7F1A3AF16393D4A008D70A0 /* about1.png */,
 				F7F1A3B016393D4A008D70A0 /* about2.png */,
 				F7F1A3B116393D4A008D70A0 /* about3.png */,
@@ -1133,6 +1160,15 @@
 				F7F1A3CB16393D4A008D70A0 /* star.png in Resources */,
 				F7F1A3CC16393D4A008D70A0 /* tryagain.png in Resources */,
 				F7F1A3CE16394C71008D70A0 /* about4.png in Resources */,
+				F7E1E2B6163E04B0009E1FFD /* Cow-Animate-1.png in Resources */,
+				F7E1E2B7163E04B0009E1FFD /* Cow-Animate-2.png in Resources */,
+				F7E1E2B8163E04B0009E1FFD /* Cow-Animate-3.png in Resources */,
+				F7E1E2B9163E04B0009E1FFD /* Default.png in Resources */,
+				F7E1E2BA163E04B0009E1FFD /* Hit.png in Resources */,
+				F7E1E2BB163E04B0009E1FFD /* Icon.png in Resources */,
+				F7E1E2BC163E04B0009E1FFD /* Milk-Bullet.png in Resources */,
+				F7E1E2BD163E04B0009E1FFD /* Stars.png in Resources */,
+				F7E1E2BE163E04B0009E1FFD /* Ufo-Hit.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

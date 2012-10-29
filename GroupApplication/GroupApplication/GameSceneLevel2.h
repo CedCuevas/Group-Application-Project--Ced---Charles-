@@ -66,6 +66,8 @@ typedef enum {
     
     float cowPointPerSecY;
     
+    int powUpShield;
+    
     CCSpriteBatchNode *batchNode;
     CCSprite *cow;
     

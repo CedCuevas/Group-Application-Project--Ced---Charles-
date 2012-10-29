@@ -45,10 +45,10 @@
         [self addChild:menuLayer];
         
         
-        CCMenuItemFont *continueToLevelTwoButton = [CCMenuItemFont itemWithString:@"Continue Next Level" target:self selector:@selector(Continue:)];
+        CCMenuItemFont *continueToLevelTwoButton = [CCMenuItemFont itemWithString:@"Continue" target:self selector:@selector(Continue:)];
         continueToLevelTwoButton.position = ccp(0, 0);
         
-        CCMenuItemFont *mainMenuButton = [CCMenuItemFont itemWithString:@"Main Menu" target:self selector:@selector(Retry)];
+        CCMenuItemFont *mainMenuButton = [CCMenuItemFont itemWithString:@"Main Menu" target:self selector:@selector(Mainmenu:)];
         mainMenuButton.position = ccp(0, -50);
         
         CCMenu *menu = [CCMenu menuWithItems:continueToLevelTwoButton, mainMenuButton,  nil];

@@ -66,10 +66,15 @@ typedef enum
     
     bool gameOver;
     
-    float cowPointPerSecY;
+    float cowPointPerSecX;
+    
+    int powUpShield;
     
     CCSpriteBatchNode *batchNode;
     CCSprite *cow;
+    
+    CCMenuItemFont *toRight;
+    CCMenuItemFont *toLeft;
     
     CCParallaxNode *backgroundNode;
     

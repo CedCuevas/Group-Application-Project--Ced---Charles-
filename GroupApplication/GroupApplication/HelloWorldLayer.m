@@ -66,8 +66,11 @@
     points = 0;
     kills = 0;
     lives = 0;
+    timeInt = 30;
     counterForLifeHeart = 3;
     counterForSpinachRegenLife = 0;
+    powUpShield = 0;
+
     
     
     if( (self=[super initWithColor:ccc4(0, 0, 0, 0)]) ) {
@@ -77,7 +80,13 @@
         pauseMenuItem = [CCMenuItemImage itemWithNormalImage:@"bird.png" selectedImage:nil target:self selector:@selector(PauseButtonTapped:)];
         pauseMenuItem.position = ccp(windowSize.width * 0.5 + 110, windowSize.height * 0.5 + 230);
         
-        CCMenu *upgradeMenu = [CCMenu menuWithItems:pauseMenuItem, nil];
+        toLeft = [CCMenuItemImage itemWithNormalImage:@"bird.png" selectedImage:@"bird.png" target:self selector:@selector(GoToLeft:)];
+        toLeft.position = ccp(100, 100);
+        
+        toRight = [CCMenuItemImage itemWithNormalImage:@"bird.png" selectedImage:@"bird.png" target:self selector:@selector(GoToRight:)];
+        toRight.position = ccp(200, 100);
+        
+        CCMenu *upgradeMenu = [CCMenu menuWithItems:pauseMenuItem, toRight, toLeft, nil];
         upgradeMenu.position = CGPointZero;
         [self addChild:upgradeMenu z:2];
         
@@ -116,16 +125,16 @@
         [self addChild:lifeHeart3];
        
         
-        batchNode = [CCSpriteBatchNode batchNodeWithFile:@"f.png"];
-        [self addChild:batchNode];
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"f.plist"];
+        //batchNode = [CCSpriteBatchNode batchNodeWithFile:@"f.png"];
+        //[self addChild:batchNode];
+        //[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"f.plist"];
         
-        cow = [CCSprite spriteWithSpriteFrameName:@"1.png"];
+        cow = [CCSprite spriteWithFile:@"1.png"];
         CGSize winSize = [CCDirector sharedDirector].winSize;
         
         //[_ship setTexture:[_batchNode texture]];
         cow.position = ccp(winSize.width * 0.5, winSize.height * 0.35);
-        [batchNode addChild:cow z:3];
+        [self addChild:cow z:3];
 		
         backgroundNode = [CCParallaxNode node];
         [self addChild:backgroundNode z:1];
@@ -137,17 +146,17 @@
         spinach = [[CCArray alloc]initWithCapacity:kNumSpinach];
         for(int i = 0; i < kNumSpinach; i++)
         {
-            CCSprite *spinachSprite = [CCSprite spriteWithSpriteFrameName:@"spinach.png"];
+            CCSprite *spinachSprite = [CCSprite spriteWithFile:@"spinach.png"];
             spinachSprite.visible = NO;
-            [batchNode addChild:spinachSprite];
+            [self addChild:spinachSprite];
             [spinach addObject:spinachSprite];
         }
         milk = [[CCArray alloc] initWithCapacity:kNumMilk];
         for(int i = 0; i < kNumMilk; ++i)
         {
-            CCSprite *milkSprite = [CCSprite spriteWithSpriteFrameName:@"bote.png"];
+            CCSprite *milkSprite = [CCSprite spriteWithFile:@"Milk-Bullet.png"];
             milkSprite.visible = NO;
-            [batchNode addChild:milkSprite];
+            [self addChild:milkSprite];
             [milk addObject:milkSprite];
         }
         
@@ -155,26 +164,23 @@
         ufo = [[CCArray alloc]initWithCapacity:kNumUfo];
         for(int i = 0; i<kNumUfo; i++)
         {
-            CCSprite *ufoSprite = [CCSprite spriteWithSpriteFrameName:@"ufo.png"];
+            CCSprite *ufoSprite = [CCSprite spriteWithFile:@"ufo.png"];
             
             ufoSprite.visible = YES;
             
-            [batchNode addChild: ufoSprite];
+            [self addChild: ufoSprite];
             [ufo addObject: ufoSprite];
-            
-            
-            
             
         }
         
         clouds1 = [[CCArray alloc]initWithCapacity:kNumClouds];
         for(int i = 0; i<kNumClouds; i++)
         {
-            CCSprite *cloudsSprite = [CCSprite spriteWithSpriteFrameName:@"clouds2.png"];
+            CCSprite *cloudsSprite = [CCSprite spriteWithFile:@"Stars.png"];
             
             cloudsSprite.visible = NO;
             
-            [batchNode addChild: cloudsSprite];
+            [self addChild: cloudsSprite];
             [clouds1 addObject: cloudsSprite];
             
             
@@ -190,6 +196,16 @@
     gameOverTime = curTime + 30;
     [self scheduleUpdate];
 	return self;
+}
+
+-(void)GoToLeft: (id)sender
+{
+    cow.position = ccp(cow.position.x - 20, cow.position.y);
+}
+
+-(void)GoToRight: (id)sender
+{
+    cow.position = ccp(cow.position.x + 20, cow.position.y);
 }
 
 
@@ -210,26 +226,24 @@
         
         [self addChild:pauseLayer z:8];
         
-        pauseScreen = [[CCSprite spriteWithFile:@"1.png"]retain];
-        pauseScreen.position = ccp(250, 190);
-        [self addChild:pauseScreen z:8];
+        //pauseScreen = [[CCSprite spriteWithFile:@"1.png"]retain];
+        //pauseScreen.position = ccp(250, 190);
+        //[self addChild:pauseScreen z:8];
         
-        CCMenuItem *ResumeMenuItem = [CCMenuItemImage itemFromNormalImage:@"1.png" selectedImage:@"1.png" target:self selector:@selector(ResumeButtonTapped:)];
-        ResumeMenuItem.position = ccp(150, 150);
-        
-        //resumeGameplay = [CCMenuItemImage itemWithNormalImage:@"buttonToLeft.png" selectedImage:@"buttonToLeft.png" target:self selector:@selector(ResumeButtonTapped:)];
-        //resumeGameplay.position = ccp(150, 150);
-        //[self addChild:resumeGameplay];
+        [CCMenuItemFont setFontName:@"Arial"];
         
         
-        CCMenuItem *QuitMenuItem = [CCMenuItemImage itemFromNormalImage:@"ufo.png" selectedImage:@"ufo.png" target:self selector:@selector(QuitButtonTapped:)];
-        QuitMenuItem.position = ccp(150, 100);
+        CCMenuItemFont *resumeGame = [CCMenuItemFont itemWithString:@"Resume" target:self selector:@selector(ResumeButtonTapped:)];
+        resumeGame.position = ccp(150, 150);
         
-        //quitGameplay = [CCMenuItemImage itemWithNormalImage:@"buttonToRight.png" selectedImage:@"buttonToRight.png" target:self selector:@selector(QuitButtonTapped:)];
-        //quitGameplay.position = ccp(150, 100);
-        //[self addChild:quitGameplay];
+        //CCMenuItemFont *restartGame = [CCMenuItemFont itemWithString:@"Restart" target:self selector:@selector(restartTapped:)];
+        //restartGame.position = ccp(150, 100);
         
-        pauseScreenMenu = [CCMenu menuWithItems:ResumeMenuItem,QuitMenuItem,  nil];
+        CCMenuItemFont *quitGame = [CCMenuItemFont itemWithString:@"Quit" target:self selector:@selector(QuitButtonTapped:)];
+        quitGame.position = ccp(150, 100);
+        
+        
+        pauseScreenMenu = [CCMenu menuWithItems:resumeGame,quitGame, nil];
         
         pauseScreenMenu.position = ccp(0,0);
         [self addChild:pauseScreenMenu z: 10];
@@ -265,14 +279,20 @@
 
 -(void)tick2: (id) sender
 {
-    timeInt++;
+    timeInt--;
     
     secs = timeInt %30;
     mins = timeInt/60;
     
+    if(powUpShield > 0)
+    {
+        powUpShield--;
+    }
+    
     [timeLabel setString:[NSString stringWithFormat:@"%02d", secs]];
     
 }
+
 
 - (float) randomValueBetween:(float)low andValue:(float)high
 {
@@ -302,23 +322,20 @@
     backgroundNode.position = (ccpAdd(backgroundNode.position,ccpMult(backgroundScrollVel, dt)));
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
-    float maxY = winSize.width - cow.contentSize.width/2;
-    float minY = cow.contentSize.width/2;
+    float maxX = winSize.width - cow.contentSize.width/2;
+    float minX = cow.contentSize.width/2;
     
-    float newY = cow.position.x + (cowPointPerSecY * dt);
-    newY = MIN(MAX(newY, minY), maxY);
-    cow.position = ccp(newY, cow.position.y);
+    float newX = cow.position.x + (cowPointPerSecX * dt);
+    newX = MIN(MAX(newX, minX), maxX);
+    cow.position = ccp(newX, cow.position.y);
     
     double curTime = CACurrentMediaTime();
     if (curTime > nextSpinachSpawn)
     {
         float randSecs = [self randomValueBetween:0.0 andValue:3.0];
         nextSpinachSpawn = randSecs + curTime;
-        nextufospawn = randSecs + curTime;
+        //nextufospawn = randSecs + curTime;
         nextcloudsspawn1 = randSecs +curTime;
-        
-        float randY = [self randomValueBetween:0 andValue:winSize.width];
-        float randDuration = [self randomValueBetween:2.0 andValue:10.0];
         
         CCSprite *spinachSprite = [spinach objectAtIndex:nextSpinach];
         nextSpinach++;
@@ -327,43 +344,66 @@
         CCSprite *cloudsSprite = [clouds1 objectAtIndex:nextclouds1];
         nextclouds1++;
         
-        CCSprite *ufoSprite = [ufo objectAtIndex:nextufo];
-        nextufo++;
+        //CCSprite *ufoSprite = [ufo objectAtIndex:nextufo];
+        //nextufo++;
         
-        if(nextufo>= ufo.count) nextufo = 0;
-        {
-            [ufoSprite stopAllActions];
-            ufoSprite.position = ccp(randY + 20, -winSize.height + ufoSprite.contentSize.height + 1000);
-            ufoSprite.visible = YES;
-            [ufoSprite runAction:[CCSequence actions:
-                                 [CCMoveBy actionWithDuration:randDuration position:ccp(0,-winSize.height-ufoSprite.contentSize.height-100)],
-                                 [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible2:)],nil]];
-            
-        }
-      
+        
+        float randX = [self randomValueBetween:spinachSprite.contentSize.width/2 andValue:winSize.width-spinachSprite.contentSize.width/2];
+        float randDuration = [self randomValueBetween:5.0 andValue:10.0];
+        
+        
         if(nextclouds1>= clouds1.count) nextclouds1 = 0;
-        {
-            [cloudsSprite stopAllActions];
-            cloudsSprite.position = ccp(randY, winSize.height - cloudsSprite.contentSize.height - 500);
-            cloudsSprite.visible = YES;
-            [cloudsSprite runAction:[CCSequence actions:
-                            [CCMoveBy actionWithDuration:3.0 position:ccp(0,+winSize.height+cloudsSprite.contentSize.height)],
-                            [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible:)],nil]];
-            
-        }
+        [cloudsSprite stopAllActions];
+        cloudsSprite.position = ccp(randX, winSize.height - cloudsSprite.contentSize.height - 500);
+        cloudsSprite.visible = YES;
+        [cloudsSprite runAction:[CCSequence actions:
+                                 [CCMoveBy actionWithDuration:3.0 position:ccp(0,+winSize.height+cloudsSprite.contentSize.height)],
+                                 [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible:)],nil]];
         
         if(nextSpinach >= spinach.count) nextSpinach = 0;
         {
             [spinachSprite stopAllActions];
-            spinachSprite.position = ccp(randY, winSize.height - spinachSprite.contentSize.height - 500);
+            spinachSprite.position = ccp(randX, winSize.height - spinachSprite.contentSize.height - 500);
             spinachSprite.visible = YES;
             [spinachSprite runAction:[CCSequence actions:
-                                 [CCMoveBy actionWithDuration:randDuration position:ccp(0,+winSize.height+spinachSprite.contentSize.height)],
-                                 [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible:)],nil]];
+                                      [CCMoveBy actionWithDuration:randDuration position:ccp(0,+winSize.height+spinachSprite.contentSize.height)],
+                                      [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible:)],nil]];
             
         }
     }
     
+    ////////
+    if (curTime > nextufospawn)
+    {
+        
+        float randSecs = [self randomValueBetween:0.0 andValue:1.0];
+        nextufospawn = randSecs + curTime;
+        
+        
+        CCSprite *ufoSprite = [ufo objectAtIndex:nextufo];
+        nextufo++;
+        
+        if(nextufo>= ufo.count) nextufo = 0;
+        
+        // If UFO position is less than or equal to 0 then respawn
+        // If UFO position is greater than window height then respawn
+        // If UFO not yet visible or been hit then respawn
+        // This prevents UFO[n] (slow duration) from suddenly disappearing
+        if(ufoSprite.position.y > winSize.height || !ufoSprite.visible || ufoSprite.position.y <= 0)
+        {
+            float randX = [self randomValueBetween:ufoSprite.contentSize.width/2 andValue:winSize.width-ufoSprite.contentSize.width/2];
+            float randDuration = [self randomValueBetween:8.0 andValue:10.0];
+            
+            
+            
+            [ufoSprite stopAllActions];
+            ufoSprite.position = ccp(randX + 20, -winSize.height + ufoSprite.contentSize.height + 1000);
+            ufoSprite.visible = YES;
+            [ufoSprite runAction:[CCSequence actions:
+                                  [CCMoveBy actionWithDuration:randDuration position:ccp(0,-winSize.height-ufoSprite.contentSize.height-100)],
+                                  [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible2:)],nil]];
+        }
+    }
     for (CCSprite *spinachSprite in spinach)
     {
         if(!spinachSprite.visible)
@@ -379,20 +419,21 @@
             }
             //if(CGRectIntersectsRect(milkSprite.boundingBox, spinachSprite.boundingBox))
             //{
-                //[[SimpleAudioEngine sharedEngine] playEffect:@"explosion_large.caf"];
-                //milkSprite.visible = NO;
-                //spinachSprite.visible = NO;
-                //continue;
+            //[[SimpleAudioEngine sharedEngine] playEffect:@"explosion_large.caf"];
+            //milkSprite.visible = NO;
+            //spinachSprite.visible = NO;
+            //continue;
             //}
         }
         
         if(CGRectIntersectsRect(cow.boundingBox, spinachSprite.boundingBox))
         {
             
+            powUpShield = 10;
             points +=1;
             counterForSpinachRegenLife = counterForSpinachRegenLife + 1;
-            NSLog(@"ASD");
-            NSLog(@"%i",points);
+            //NSLog(@"ASD");
+            //NSLog(@"%i",points);
             spinachSprite.visible = NO;
             if(counterForLifeHeart == 2)
             {
@@ -413,7 +454,7 @@
                     lives++;
                 }
             }
-            NSLog(@"Kain spinach! %i",lives);
+            //NSLog(@"Kain spinach! %i",lives);
             //_lives++;
         }
     }
@@ -445,7 +486,8 @@
             }
         }
         
-        if(CGRectIntersectsRect(cow.boundingBox, ufoSprite.boundingBox))
+        //Collision detection for ufo and powerup still active
+        if(CGRectIntersectsRect(cow.boundingBox, ufoSprite.boundingBox)  && powUpShield == 0)
         {
             lives--;
             ufoSprite.visible = NO;
@@ -470,81 +512,51 @@
     }
     
     
-    if (lives <= 0)
+    if (lives <= 0 || curTime >= gameOverTime)
     {
         [cow stopAllActions];
         cow.visible = FALSE;
-
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        
-        // Get high scores array from "defaults" object
-        NSMutableArray *highScores = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"scores"]];
-        
-        // Iterate thru high scores; see if current point value is higher than any of the stored values
-        for (int i = 0; i < [highScores count]; i++)
-        {
-            if (kills >= [[highScores objectAtIndex:i] intValue])
-            {
-                // Insert new high score, which pushes all others down
-                [highScores insertObject:[NSNumber numberWithInt:kills] atIndex:i];
-                
-                // Remove last score, so as to ensure only 5 entries in the high score array
-                [highScores removeLastObject];
-                
-                // Re-save scores array to user defaults
-                [defaults setObject:highScores forKey:@"scores"];
-                
-                [defaults synchronize];
-                
-                NSLog(@"Saved new high score of %i", kills);
-                
-                // Bust out of the loop 
-                break;
-            }
-        }
-        [[CCDirector sharedDirector]replaceScene:[GameOver scene]];
-    
-    }
-    else if (curTime >= gameOverTime)
-    {
-        //NSLog(@"1 end");
-        [cow stopAllActions];
-        cow.visible = FALSE;
-        
-        NSLog(@"1 end");
-        
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        // Get high scores array from "defaults" object
-        NSMutableArray *highScores = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"scores"]];
-        
-        // Iterate thru high scores; see if current point value is higher than any of the stored values
-        for (int i = 0; i < [highScores count]; i++)
+        if (lives <= 0)
         {
-            if (kills >= [[highScores objectAtIndex:i] intValue])
+            // Get high scores array from "defaults" object
+            NSMutableArray *highScores = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"scores"]];
+            
+            // Iterate thru high scores; see if current point value is higher than any of the stored values
+            for (int i = 0; i < [highScores count]; i++)
             {
-                // Insert new high score, which pushes all others down
-                [highScores insertObject:[NSNumber numberWithInt:kills] atIndex:i];
-                
-                // Remove last score, so as to ensure only 5 entries in the high score array
-                [highScores removeLastObject];
-                
-                // Re-save scores array to user defaults
-                [defaults setObject:highScores forKey:@"scores"];
-                
-                [defaults synchronize];
-                
-                NSLog(@"Saved new high score of %i", kills);
-                
-                // Bust out of the loop
-                break;
+                if (kills >= [[highScores objectAtIndex:i] intValue])
+                {
+                    // Insert new high score, which pushes all others down
+                    [highScores insertObject:[NSNumber numberWithInt:kills] atIndex:i];
+                    
+                    // Remove last score, so as to ensure only 5 entries in the high score array
+                    [highScores removeLastObject];
+                    
+                    // Re-save scores array to user defaults
+                    [defaults setObject:highScores forKey:@"scores"];
+                    
+                    [defaults synchronize];
+                    
+                    NSLog(@"Saved new high score of %i", kills);
+                    
+                    // Bust out of the loop
+                    break;
+                }
             }
+            
+            [[CCDirector sharedDirector]replaceScene:[GameOver scene]];
         }
-        NSLog(@"2 end");
-
+        else
+        {
+            //NSInteger lastScore = [[NSUserDefaults standardUserDefaults] integerForKey:@"last_score"];
+            [[NSUserDefaults standardUserDefaults] setInteger:kills forKey:@"last_score"];
+            //NSLog(@"Con Score %i",lastScore);
+            [[CCDirector sharedDirector]replaceScene:[ContinueGame scene]];
+        }
         
-        [[CCDirector sharedDirector]replaceScene:[ContinueGame scene]];
     }
     
 }
@@ -561,9 +573,9 @@
     milkSprite.visible = YES;
     [milkSprite stopAllActions];
     [milkSprite runAction:[CCSequence actions:
-                          [CCMoveBy actionWithDuration:0.5 position:ccp(0, +winSize.height)],
-                          [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible:)],
-                          nil]];
+                           [CCMoveBy actionWithDuration:2.0 position:ccp(0, +winSize.height)],
+                           [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible:)],
+                           nil]];
     
 }
 
@@ -600,7 +612,7 @@
     float accelFraction = accelDiff / kMaxDiffX;
     float pointPerSec = kShipMaxPointsPerSec * accelFraction;
     
-    cowPointPerSecY = pointPerSec;
+    cowPointPerSecX = pointPerSec;
 }
 
 // on "dealloc" you need to release all your retained objects
