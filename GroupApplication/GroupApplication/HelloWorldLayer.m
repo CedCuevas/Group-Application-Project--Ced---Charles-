@@ -439,6 +439,7 @@
             float randX = [self randomValueBetween:shieldSprite.contentSize.width/2 andValue:winSize.width-shieldSprite.contentSize.width/2];
             float randDuration = [self randomValueBetween:6.0 andValue:10.0];
             
+            //test
             
             
             [shieldSprite stopAllActions];
