@@ -81,13 +81,7 @@
         pauseMenuItem = [CCMenuItemImage itemWithNormalImage:@"bird.png" selectedImage:nil target:self selector:@selector(PauseButtonTapped:)];
         pauseMenuItem.position = ccp(windowSize.width * 0.5 + 110, windowSize.height * 0.5 + 230);
         
-        toLeft = [CCMenuItemImage itemWithNormalImage:@"bird.png" selectedImage:@"bird.png" target:self selector:@selector(GoToLeft:)];
-        toLeft.position = ccp(100, 100);
-        
-        toRight = [CCMenuItemImage itemWithNormalImage:@"bird.png" selectedImage:@"bird.png" target:self selector:@selector(GoToRight:)];
-        toRight.position = ccp(200, 100);
-        
-        CCMenu *upgradeMenu = [CCMenu menuWithItems:pauseMenuItem, toRight, toLeft, nil];
+        CCMenu *upgradeMenu = [CCMenu menuWithItems:pauseMenuItem, nil];
         upgradeMenu.position = CGPointZero;
         [self addChild:upgradeMenu z:2];
         
@@ -209,17 +203,6 @@
     [self scheduleUpdate];
 	return self;
 }
-
--(void)GoToLeft: (id)sender
-{
-    cow.position = ccp(cow.position.x - 20, cow.position.y);
-}
-
--(void)GoToRight: (id)sender
-{
-    cow.position = ccp(cow.position.x + 20, cow.position.y);
-}
-
 
 
 -(void)PauseButtonTapped: (id)sender
@@ -405,12 +388,12 @@
         if(ufoSprite.position.y > winSize.height || !ufoSprite.visible || ufoSprite.position.y <= 0)
         {
             float randX = [self randomValueBetween:ufoSprite.contentSize.width/2 andValue:winSize.width-ufoSprite.contentSize.width/2];
-            float randDuration = [self randomValueBetween:8.0 andValue:10.0];
+            float randDuration = [self randomValueBetween:5.0 andValue:8.0];
             
             
             
             [ufoSprite stopAllActions];
-            ufoSprite.position = ccp(randX + 20, -winSize.height + ufoSprite.contentSize.height + 1000);
+            ufoSprite.position = ccp(randX + 30, -winSize.height + ufoSprite.contentSize.height + 1000);
             ufoSprite.visible = YES;
             [ufoSprite runAction:[CCSequence actions:
                                   [CCMoveBy actionWithDuration:randDuration position:ccp(0,-winSize.height-ufoSprite.contentSize.height-100)],
@@ -655,7 +638,7 @@
 {
 #define kFilteringFactor 0.1
 #define kRestAccelX -0.6
-#define kShipMaxPointsPerSec (winSize.width * 0.5)
+#define kCowMaxPointsPerSec (winSize.width * 0.5)
 #define kMaxDiffX 0.2
     
     UIAccelerationValue rollingX, rollingY, rollingZ;
@@ -665,14 +648,14 @@
     rollingZ = (acceleration.z * kFilteringFactor) + (rollingZ * (1.0 - kFilteringFactor));
     
     float accelX = acceleration.x - rollingX;
-    //float accelY = acceleration.y - rollingY;
+    float accelY = acceleration.y - rollingY;
     //float accelZ = acceleration.z - rollingZ;
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
     
-    float accelDiff = accelX - kRestAccelX;
+    float accelDiff = accelY - kRestAccelX;
     float accelFraction = accelDiff / kMaxDiffX;
-    float pointPerSec = kShipMaxPointsPerSec * accelFraction;
+    float pointPerSec = kCowMaxPointsPerSec * accelFraction;
     
     cowPointPerSecX = pointPerSec;
 }

@@ -11,6 +11,7 @@
 #import "SimpleAudioEngine.h"
 #define kNumSpinach 15
 #define kNumMilk 5
+#define kNumPowUpShield 1
 #import "MyMenu.h"
 #import "HelloWorldLayer.h"
 #import "GameOver2.h"
@@ -143,6 +144,17 @@
             [batchNode addChild:spinachSprite];
             [spinach addObject:spinachSprite];
         }
+        
+        shield = [[CCArray alloc] initWithCapacity:kNumPowUpShield];
+        for(int i = 0; i < kNumPowUpShield; ++i)
+        {
+            CCSprite *powShield = [CCSprite spriteWithFile:@"bote.png"];
+            powShield.visible = NO;
+            [self addChild:powShield];
+            [shield addObject:powShield];
+        }
+
+        
         milk = [[CCArray alloc] initWithCapacity:kNumMilk];
         for(int i = 0; i < kNumMilk; ++i)
         {
@@ -188,7 +200,7 @@
 	}
     lives = 3;
     double curTime = CACurrentMediaTime();
-    gameOverTime = curTime + 20;
+    gameOverTime = curTime + 60;
     [self scheduleUpdate];
 	return self;
 }
@@ -301,12 +313,12 @@
     backgroundNode.position = (ccpAdd(backgroundNode.position,ccpMult(backgroundScrollVel, dt)));
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
-    float maxY = winSize.width - cow.contentSize.width/2;
-    float minY = cow.contentSize.width/2;
+    float maxX = winSize.width - cow.contentSize.width/2;
+    float minX = cow.contentSize.width/2;
     
-    float newY = cow.position.x + (cowPointPerSecY * dt);
-    newY = MIN(MAX(newY, minY), maxY);
-    cow.position = ccp(newY, cow.position.y);
+    float newX = cow.position.x + (cowPointPerSecX * dt);
+    newX = MIN(MAX(newX, minX), maxX);
+    cow.position = ccp(newX, cow.position.y);
     
     double curTime = CACurrentMediaTime();
     if (curTime > nextSpinachSpawn)
@@ -323,12 +335,13 @@
         CCSprite *cloudsSprite = [clouds1 objectAtIndex:nextclouds1];
         nextclouds1++;
         
+        
         //CCSprite *ufoSprite = [ufo objectAtIndex:nextufo];
         //nextufo++;
         
         
         float randX = [self randomValueBetween:spinachSprite.contentSize.width/2 andValue:winSize.width-spinachSprite.contentSize.width/2];
-        float randDuration = [self randomValueBetween:7.0 andValue:11.0];
+        float randDuration = [self randomValueBetween:5.0 andValue:10.0];
         
         
         if(nextclouds1>= clouds1.count) nextclouds1 = 0;
@@ -371,16 +384,49 @@
         if(ufoSprite.position.y > winSize.height || !ufoSprite.visible || ufoSprite.position.y <= 0)
         {
             float randX = [self randomValueBetween:ufoSprite.contentSize.width/2 andValue:winSize.width-ufoSprite.contentSize.width/2];
-            float randDuration = [self randomValueBetween:5.0 andValue:7.0];
+            float randDuration = [self randomValueBetween:5.0 andValue:8.0];
             
             
             
             [ufoSprite stopAllActions];
-            ufoSprite.position = ccp(randX + 40, -winSize.height + ufoSprite.contentSize.height + 1000);
+            ufoSprite.position = ccp(randX + 30, -winSize.height + ufoSprite.contentSize.height + 1000);
             ufoSprite.visible = YES;
             [ufoSprite runAction:[CCSequence actions:
                                   [CCMoveBy actionWithDuration:randDuration position:ccp(0,-winSize.height-ufoSprite.contentSize.height-100)],
                                   [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible2:)],nil]];
+        }
+    }
+    
+    if (curTime > nextShieldSpawn)
+    {
+        
+        float randSecs = [self randomValueBetween:0.0 andValue:1.0];
+        nextShieldSpawn = randSecs + curTime;
+        
+        
+        CCSprite *shieldSprite = [shield objectAtIndex:nextShield];
+        nextShield++;
+        
+        if(nextShield>= shield.count) nextShield = 0;
+        
+        // If UFO position is less than or equal to 0 then respawn
+        // If UFO position is greater than window height then respawn
+        // If UFO not yet visible or been hit then respawn
+        // This prevents UFO[n] (slow duration) from suddenly disappearing
+        if(shieldSprite.position.y > winSize.height || !shieldSprite.visible || shieldSprite.position.y <= 0)
+        {
+            float randX = [self randomValueBetween:shieldSprite.contentSize.width/2 andValue:winSize.width-shieldSprite.contentSize.width/2];
+            float randDuration = [self randomValueBetween:6.0 andValue:10.0];
+            
+            //test
+            
+            
+            [shieldSprite stopAllActions];
+            shieldSprite.position = shieldSprite.position = ccp(randX, winSize.height - shieldSprite.contentSize.height - 500);
+            shieldSprite.visible = YES;
+            [shieldSprite runAction:[CCSequence actions:
+                                     [CCMoveBy actionWithDuration:randDuration position:ccp(0,+winSize.height+shieldSprite.contentSize.height-100)],
+                                     [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible2:)],nil]];
         }
     }
     
@@ -409,10 +455,11 @@
         if(CGRectIntersectsRect(cow.boundingBox, spinachSprite.boundingBox))
         {
             
+            //powUpShield = 10;
             points +=1;
             counterForSpinachRegenLife = counterForSpinachRegenLife + 1;
-            NSLog(@"ASD");
-            NSLog(@"%i",points);
+            //NSLog(@"ASD");
+            //NSLog(@"%i",points);
             spinachSprite.visible = NO;
             if(counterForLifeHeart == 2)
             {
@@ -433,11 +480,26 @@
                     lives++;
                 }
             }
-            NSLog(@"Kain spinach! %i",lives);
+            //NSLog(@"Kain spinach! %i",lives);
             //_lives++;
         }
     }
     
+    for (CCSprite *shieldSprite in shield)
+    {
+        if(!shieldSprite.visible)
+        {
+            continue;
+        }
+        
+        if(CGRectIntersectsRect(cow.boundingBox, shieldSprite.boundingBox))
+        {
+            
+            powUpShield = 5;
+            shieldSprite.visible = NO;
+            //_lives++;
+        }
+    }
     
     
     for (CCSprite *ufoSprite in ufo)
@@ -455,9 +517,8 @@
             }
             if(CGRectIntersectsRect(milkSprite.boundingBox, ufoSprite.boundingBox))
             {
-                kills+=200;
+                kills+=100;
                 [pointsDisplay setString:[NSString stringWithFormat:@"%i", kills]];
-                
                 NSLog(@"%i", kills);
                 milkSprite.visible = NO;
                 ufoSprite.visible = NO;
@@ -466,7 +527,8 @@
             }
         }
         
-        if(CGRectIntersectsRect(cow.boundingBox, ufoSprite.boundingBox))
+        //Collision detection for ufo and powerup still active
+        if(CGRectIntersectsRect(cow.boundingBox, ufoSprite.boundingBox)  && powUpShield == 0)
         {
             lives--;
             ufoSprite.visible = NO;
@@ -609,7 +671,7 @@
     float accelFraction = accelDiff / kMaxDiffX;
     float pointPerSec = kShipMaxPointsPerSec * accelFraction;
     
-    cowPointPerSecY = pointPerSec;
+    cowPointPerSecX = pointPerSec;
 }
 
 // on "dealloc" you need to release all your retained objects

@@ -37,7 +37,7 @@
     if((self = [super initWithColor:ccc4(0, 0, 0, 0)]))
     {
         
-        CCLabelTTF *title = [CCLabelTTF labelWithString:@"LEVEL FINISHED" fontName:@"Arial" fontSize:40];
+        CCLabelTTF *title = [CCLabelTTF labelWithString:@"LEVEL FINISHED" fontName:@"Arial" fontSize:30];
         title.position = ccp(170, 400);
         [self addChild:title];
         

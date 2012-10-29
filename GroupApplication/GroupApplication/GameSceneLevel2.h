@@ -22,6 +22,7 @@ typedef enum {
     CCArray *milk;
     CCArray *ufo;
     CCArray *clouds1;
+    CCArray *shield;
     
     CCLabelTTF *pause;
     CCSprite *movingSpring;
@@ -48,6 +49,9 @@ typedef enum {
     int nextufo;
     double nextufospawn;
     
+    int nextShield;
+    double nextShieldSpawn;
+    
     
     int score;
     
@@ -64,7 +68,7 @@ typedef enum {
     
     bool gameOver;
     
-    float cowPointPerSecY;
+    float cowPointPerSecX;
     
     int powUpShield;
     
