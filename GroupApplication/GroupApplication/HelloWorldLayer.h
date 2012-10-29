@@ -24,6 +24,7 @@ typedef enum
     CCArray *milk;
     CCArray *ufo;
     CCArray *clouds1;
+    CCArray *shield;
     
     CCLabelTTF *pause;
     CCSprite *movingSpring;
@@ -49,6 +50,10 @@ typedef enum
     double nextcloudsspawn1;
     int nextufo;
     double nextufospawn;
+    
+    int nextShield;
+    double nextShieldSpawn;
+
     
     
     int score;

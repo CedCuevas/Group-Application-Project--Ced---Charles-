@@ -13,6 +13,7 @@
 #import "SimpleAudioEngine.h"
 #define kNumSpinach 15
 #define kNumMilk 5
+#define kNumPowUpShield 1
 #import "MyMenu.h"
 #import "GameOver.h"
 #import "ContinueGame.h"
@@ -151,6 +152,17 @@
             [self addChild:spinachSprite];
             [spinach addObject:spinachSprite];
         }
+        
+        shield = [[CCArray alloc] initWithCapacity:kNumPowUpShield];
+        for(int i = 0; i < kNumPowUpShield; ++i)
+        {
+            CCSprite *powShield = [CCSprite spriteWithFile:@"bote.png"];
+            powShield.visible = NO;
+            [self addChild:powShield];
+            [shield addObject:powShield];
+        }
+        
+
         milk = [[CCArray alloc] initWithCapacity:kNumMilk];
         for(int i = 0; i < kNumMilk; ++i)
         {
@@ -344,6 +356,7 @@
         CCSprite *cloudsSprite = [clouds1 objectAtIndex:nextclouds1];
         nextclouds1++;
         
+        
         //CCSprite *ufoSprite = [ufo objectAtIndex:nextufo];
         //nextufo++;
         
@@ -404,6 +417,39 @@
                                   [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible2:)],nil]];
         }
     }
+    
+    if (curTime > nextShieldSpawn)
+    {
+        
+        float randSecs = [self randomValueBetween:0.0 andValue:1.0];
+        nextShieldSpawn = randSecs + curTime;
+        
+        
+        CCSprite *shieldSprite = [shield objectAtIndex:nextShield];
+        nextShield++;
+        
+        if(nextShield>= shield.count) nextShield = 0;
+        
+        // If UFO position is less than or equal to 0 then respawn
+        // If UFO position is greater than window height then respawn
+        // If UFO not yet visible or been hit then respawn
+        // This prevents UFO[n] (slow duration) from suddenly disappearing
+        if(shieldSprite.position.y > winSize.height || !shieldSprite.visible || shieldSprite.position.y <= 0)
+        {
+            float randX = [self randomValueBetween:shieldSprite.contentSize.width/2 andValue:winSize.width-shieldSprite.contentSize.width/2];
+            float randDuration = [self randomValueBetween:6.0 andValue:10.0];
+            
+            
+            
+            [shieldSprite stopAllActions];
+            shieldSprite.position = shieldSprite.position = ccp(randX, winSize.height - shieldSprite.contentSize.height - 500);
+            shieldSprite.visible = YES;
+            [shieldSprite runAction:[CCSequence actions:
+                                  [CCMoveBy actionWithDuration:randDuration position:ccp(0,+winSize.height+shieldSprite.contentSize.height-100)],
+                                  [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible2:)],nil]];
+        }
+    }
+
     for (CCSprite *spinachSprite in spinach)
     {
         if(!spinachSprite.visible)
@@ -429,7 +475,7 @@
         if(CGRectIntersectsRect(cow.boundingBox, spinachSprite.boundingBox))
         {
             
-            powUpShield = 10;
+            //powUpShield = 10;
             points +=1;
             counterForSpinachRegenLife = counterForSpinachRegenLife + 1;
             //NSLog(@"ASD");
@@ -459,7 +505,22 @@
         }
     }
     
-    
+    for (CCSprite *shieldSprite in shield)
+    {
+        if(!shieldSprite.visible)
+        {
+            continue;
+        }
+        
+        if(CGRectIntersectsRect(cow.boundingBox, shieldSprite.boundingBox))
+        {
+            
+            powUpShield = 5;
+            shieldSprite.visible = NO;
+            //_lives++;
+        }
+    }
+
     
     for (CCSprite *ufoSprite in ufo)
     {

@@ -12,6 +12,7 @@
 #define kNumSpinach 15
 #define kNumMilk 5
 #import "MyMenu.h"
+#import "HelloWorldLayer.h"
 #import "GameOver2.h"
 #import "ContinueGame2.h"
 #define kNumUfo 20
@@ -454,7 +455,7 @@
             }
             if(CGRectIntersectsRect(milkSprite.boundingBox, ufoSprite.boundingBox))
             {
-                kills+=1;
+                kills+=200;
                 [pointsDisplay setString:[NSString stringWithFormat:@"%i", kills]];
                 NSLog(@"%i", kills);
                 milkSprite.visible = NO;

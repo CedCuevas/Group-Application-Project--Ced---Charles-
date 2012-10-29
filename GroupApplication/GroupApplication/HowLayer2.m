@@ -93,7 +93,7 @@
 
 - (void) backToMenu:(id)sender;
 {
-    [[CCDirector sharedDirector] replaceScene:[how3 scene]];
+    [[CCDirector sharedDirector] replaceScene:[MyMenu scene]];
 }
 
 
