@@ -188,7 +188,7 @@
 	}
     lives = 3;
     double curTime = CACurrentMediaTime();
-    gameOverTime = curTime + 60;
+    gameOverTime = curTime + 20;
     [self scheduleUpdate];
 	return self;
 }
@@ -457,6 +457,7 @@
             {
                 kills+=200;
                 [pointsDisplay setString:[NSString stringWithFormat:@"%i", kills]];
+                
                 NSLog(@"%i", kills);
                 milkSprite.visible = NO;
                 ufoSprite.visible = NO;
@@ -529,9 +530,28 @@
         }
         else
         {
-            //NSInteger lastScore = [[NSUserDefaults standardUserDefaults] integerForKey:@"last_score"];
-            [[NSUserDefaults standardUserDefaults] setInteger:kills forKey:@"last_score"];
-            //NSLog(@"Con Score %i",lastScore);
+            NSMutableArray *highScores = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"scores"]];
+            for (int i = 0; i < [highScores count]; i++)
+            {
+                if (kills >= [[highScores objectAtIndex:i] intValue])
+                {
+                    // Insert new high score, which pushes all others down
+                    [highScores insertObject:[NSNumber numberWithInt:kills] atIndex:i];
+                    
+                    // Remove last score, so as to ensure only 5 entries in the high score array
+                    [highScores removeLastObject];
+                    
+                    // Re-save scores array to user defaults
+                    [defaults setObject:highScores forKey:@"scores"];
+                    
+                    [defaults synchronize];
+                    
+                    NSLog(@"Saved new high score of %i", kills);
+                    
+                    // Bust out of the loop
+                    break;
+                }
+            }
             [[CCDirector sharedDirector]replaceScene:[ContinueGame2 scene]];
         }
         
